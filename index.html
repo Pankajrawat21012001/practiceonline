@@ -1525,18 +1525,18 @@ footer {
         <div class="form-body" id="form-body">
           <form id="wl-form" novalidate>
             <div class="fsec-title">Your Details</div>
-            <div class="frow" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div class="frow" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
               <div class="fg">
                 <label class="flbl" for="f-name">Full Name</label>
                 <input type="text" id="f-name" name="name" class="finput" placeholder="Rahul Sharma">
               </div>
               <div class="fg">
-                <label class="flbl" for="f-email">Email Address</label>
-                <input type="email" id="f-email" name="email" class="finput" placeholder="rahul@gmail.com">
-              </div>
-              <div class="fg">
                 <label class="flbl" for="f-phone">WhatsApp Number <span>*</span></label>
                 <input type="tel" id="f-phone" name="phone" class="finput" placeholder="+91 98765 43210" required>
+              </div>
+              <div class="fg">
+                <label class="flbl" for="f-role">Target Role / Job Title</label>
+                <input type="text" id="f-role" name="role" class="finput" placeholder="e.g. SDE, PM, etc">
               </div>
             </div>
 
@@ -1616,21 +1616,11 @@ footer {
             <div class="fg">
               <div class="flbl-row">
                 <div class="qn">3</div>
-                <label class="flbl">Would you pay for AI interview practice with detailed feedback? <span>*</span></label>
+                <label class="flbl">What's the minimum you'd pay per session? <span class="fhint">(Enter ₹0 if you want it free)</span> <span>*</span></label>
               </div>
-              <div class="radio-card-group segmented">
-                <label class="radio-card-opt">
-                  <input type="radio" name="q3" value="No" required>
-                  <span>No</span>
-                </label>
-                <label class="radio-card-opt">
-                  <input type="radio" name="q3" value="Maybe">
-                  <span>Maybe</span>
-                </label>
-                <label class="radio-card-opt">
-                  <input type="radio" name="q3" value="Yes">
-                  <span>Yes</span>
-                </label>
+              <div style="position: relative; display: flex; align-items: center;">
+                <span style="position: absolute; left: 16px; color: var(--text-s); font-weight: 600; font-size: 14px;">₹</span>
+                <input type="number" name="q3" class="finput" placeholder="e.g. 99 (or 0)" min="0" required style="padding-left: 32px;">
               </div>
             </div>
 
@@ -1638,11 +1628,29 @@ footer {
             <div class="fg">
               <div class="flbl-row">
                 <div class="qn">4</div>
-                <label class="flbl">What would you consider a reasonable price for one interview session? <span>*</span></label>
+                <label class="flbl">What matters most to you? <span>*</span></label>
               </div>
-              <div style="position: relative; display: flex; align-items: center;">
-                <span style="position: absolute; left: 16px; color: var(--text-s); font-weight: 600; font-size: 14px;">₹</span>
-                <input type="number" name="q4" class="finput" placeholder="e.g. 99" min="0" required style="padding-left: 32px;">
+              <div class="checkbox-group">
+                <label class="checkbox-opt">
+                  <input type="checkbox" name="q4" value="Realistic feel">
+                  <span>Realistic feel</span>
+                </label>
+                <label class="checkbox-opt">
+                  <input type="checkbox" name="q4" value="Detailed feedback">
+                  <span>Detailed feedback</span>
+                </label>
+                <label class="checkbox-opt">
+                  <input type="checkbox" name="q4" value="Low price">
+                  <span>Low price</span>
+                </label>
+                <label class="checkbox-opt">
+                  <input type="checkbox" name="q4" value="Company-specific questions">
+                  <span>Company-specific questions</span>
+                </label>
+                <label class="checkbox-opt">
+                  <input type="checkbox" name="q4" value="Real Human for mock interview">
+                  <span>Real Human for mock interview</span>
+                </label>
               </div>
             </div>
 
@@ -1650,7 +1658,7 @@ footer {
             <div class="fg">
               <div class="flbl-row">
                 <div class="qn">5</div>
-                <label class="flbl">Would an AI avatar improve the experience enough to justify a higher price? <span>*</span></label>
+                <label class="flbl">Would you like early access when we launch? <span>*</span></label>
               </div>
               <div class="radio-card-group segmented">
                 <label class="radio-card-opt">
@@ -1661,10 +1669,6 @@ footer {
                   <input type="radio" name="q5" value="No">
                   <span>No</span>
                 </label>
-                <label class="radio-card-opt">
-                  <input type="radio" name="q5" value="Not sure">
-                  <span>Not sure</span>
-                </label>
               </div>
             </div>
 
@@ -1672,9 +1676,9 @@ footer {
             <div class="fg">
               <div class="flbl-row">
                 <div class="qn">6</div>
-                <label class="flbl">Any feedback or requests? <span class="fhint">(e.g., "Add this feature", "I don't like this", "This is too costly", etc.)</span></label>
+                <label class="flbl">If you had a magic interview preparation tool, what would it do? <span class="fhint">(e.g., "Add this feature", "I don't like this", "This is too costly", etc.)</span></label>
               </div>
-              <textarea name="q6" class="ftextarea" placeholder="Feel free to share anything else here..."></textarea>
+              <textarea name="q6" class="ftextarea" placeholder="Describe your dream interview prep tool or share any feedback here..."></textarea>
             </div>
 
             <button type="submit" class="sbtn">
@@ -1814,6 +1818,13 @@ document.getElementById('wl-form').addEventListener('submit', function(e) {
     return;
   }
 
+  // Validate Q4 checkbox
+  const q4Checked = document.querySelectorAll('input[name="q4"]:checked');
+  if (q4Checked.length === 0) {
+    alert('Please select at least one option for Q4.');
+    return;
+  }
+
   const d = new FormData(this);
   
   // Helper to format values (including checkbox arrays)
@@ -1855,10 +1866,10 @@ document.getElementById('wl-form').addEventListener('submit', function(e) {
 
   // Real EmailJS submission
   const templateParams = {
-    subject: 'PracticeOnline Waitlist — ' + (v('name') !== 'Not answered' ? v('name') : 'Anonymous'),
+    subject: 'PracticeOnline Feedback — ' + (v('name') !== 'Not answered' ? v('name') : 'Anonymous'),
     name: v('name'),
-    email: v('email'),
     phone: v('phone'),
+    role: v('role'),
     q1: v('q1'),
     q2: v('q2'),
     q3: v('q3'),
