@@ -1830,10 +1830,10 @@ document.getElementById('wl-form').addEventListener('submit', function(e) {
     return res;
   };
 
-  // EmailJS configuration variables from env
-  const SERVICE_ID = ENV.EMAILJS_SERVICE_ID;
-  const TEMPLATE_ID = ENV.EMAILJS_TEMPLATE_ID;
-  const PUBLIC_KEY = ENV.EMAILJS_PUBLIC_KEY;
+  // EmailJS configuration variables from env with fallbacks for static hosting (e.g. GitHub Pages)
+  const SERVICE_ID = ENV.EMAILJS_SERVICE_ID || 'service_ui31st8';
+  const TEMPLATE_ID = ENV.EMAILJS_TEMPLATE_ID || 'template_7n3ea6t';
+  const PUBLIC_KEY = ENV.EMAILJS_PUBLIC_KEY || 'SazgG2YTqQpxvbkRc';
 
   const btn = document.querySelector('.sbtn');
   const btnText = btn.innerHTML;
@@ -1845,8 +1845,8 @@ document.getElementById('wl-form').addEventListener('submit', function(e) {
     PUBLIC_KEY === 'YOUR_PUBLIC_KEY' || SERVICE_ID === 'YOUR_SERVICE_ID' || TEMPLATE_ID === 'YOUR_TEMPLATE_ID';
 
   if (missingCreds) {
-    console.warn('EmailJS credentials missing or not loaded from .env — make sure you are running via a local server (not file://).');
-    alert('Configuration error: EmailJS keys not loaded. Please run the site via a local server (e.g. npx serve .) and ensure your .env file has all three keys filled in.');
+    console.warn('EmailJS credentials missing.');
+    alert('Configuration error: EmailJS keys not found. Please make sure the keys are configured.');
     btn.disabled = false;
     btn.innerHTML = btnText;
     return;
@@ -2083,13 +2083,13 @@ function runPhase() {
 document.addEventListener('DOMContentLoaded', async () => {
   ENV = await loadEnv();
   
-  // Initialize EmailJS with credentials from .env
-  const publicKey = ENV.EMAILJS_PUBLIC_KEY;
+  // Initialize EmailJS with credentials from .env or fallback
+  const publicKey = ENV.EMAILJS_PUBLIC_KEY || 'SazgG2YTqQpxvbkRc';
   if (publicKey && publicKey !== 'YOUR_PUBLIC_KEY') {
     emailjs.init({ publicKey });
     console.log('EmailJS initialized successfully.');
   } else {
-    console.warn('EmailJS public key not found in .env — make sure you are running via a local server and your .env is filled in.');
+    console.warn('EmailJS public key not found.');
   }
   
   runPhase();
